@@ -1,0 +1,33 @@
+.legend {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: black;
+  height: 8vh;
+  padding: 1vh;
+  border: 3px solid white;
+  margin-top: 5px;
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  font-style: italic;
+  transition: all 0.3s ease-in-out;
+}
+
+.player > *:first-child {
+  margin-left: 10px;
+}
+
+.player1.active {
+  color: lightblue;
+}
+
+.player2.active {
+  color: yellow;
+}
+
+.disabled {
+  color: rgba(211, 211, 211, 0.4);
+}

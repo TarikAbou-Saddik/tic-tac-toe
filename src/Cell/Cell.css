@@ -1,0 +1,12 @@
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: 3px solid white;
+  min-height: 15vh;
+}
+
+.cell > * {
+  font-size: 4.5rem;
+}
