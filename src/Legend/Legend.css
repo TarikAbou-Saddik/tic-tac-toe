@@ -1,18 +1,22 @@
 .legend {
+  position: absolute;
+  bottom: 1vh;
   display: flex;
   justify-content: space-around;
   align-items: center;
   background: black;
   height: 8vh;
+  width: 80%;
   padding: 1vh;
   border: 3px solid white;
-  margin-top: 5px;
+  margin: 5px auto;
 }
 
 .player {
   display: flex;
   align-items: center;
   font-style: italic;
+  text-transform: uppercase;
   transition: all 0.3s ease-in-out;
 }
 

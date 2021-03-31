@@ -6,7 +6,7 @@ const Header = () => {
     <header>
       <h1 className='title'>Tic Tac Toe</h1>
       <p className='subtitle'>
-        Seriously, when was the last time you actually played this?
+        Play against the computer, local with a friend or online!
       </p>
     </header>
   );

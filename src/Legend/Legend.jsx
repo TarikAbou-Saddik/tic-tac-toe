@@ -24,7 +24,8 @@ const Legend = ({ isPlaying, children }) => {
             player.hasTurn,
           )}`}
         >
-          PLAYER {index + 1} {getIcon(player.isCircle)}
+          {player.name}
+          {getIcon(player.isCircle)}
         </div>
       ))}
     </div>

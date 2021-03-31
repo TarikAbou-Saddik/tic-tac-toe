@@ -1,35 +1,33 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import Cell from '../Cell';
+import React, { useState, useEffect, Fragment, useReducer } from 'react';
 import Legend from '../Legend/Legend';
+import BoardSettings from '../BoardSettings/BoardSettings';
+import Grid from '../Grid/Grid';
 import {
   allCellsEqual,
   getColumns,
   getDiagonals,
   getRows,
 } from '../Utils/Utils';
+import {
+  playerListReducer,
+  initialPlayerList,
+  initialGrid,
+  SET_NAME,
+  SWITCH_TURN,
+  RESET_PLAYER_TURN,
+} from '../reducers';
 import './Board.css';
 
-const OpponentType = {
-  AI: 0,
-  HUMAN: 1,
-};
-
 const Board = () => {
-  const [grid, setGrid] = useState(
-    Array(9).fill({ isCircle: false, isVisible: false }),
-  );
+  const [grid, setGrid] = useState(initialGrid());
   const [isPlaying, setIsPlaying] = useState(false);
-  const [opponent, setOpponent] = useState(OpponentType.HUMAN);
-  const [playerList, setPlayerList] = useState([]);
+  const [isConfiguring, setIsConfiguring] = useState(false);
   const [overlayMessage, setOverlayMessage] = useState('Wanna play a game?');
-  const [buttonMessage, setButtonMessage] = useState('Start');
-
-  useEffect(() => {
-    setPlayerList([
-      { isPlayerOne: true, isCircle: false, hasTurn: true },
-      { isPlayerOne: false, isCircle: true, hasTurn: false },
-    ]);
-  }, []);
+  const [buttonMessage, setButtonMessage] = useState('next');
+  const [playerList, dispatch] = useReducer(
+    playerListReducer,
+    initialPlayerList(),
+  );
 
   useEffect(() => {
     const hasWin = grouping => grouping.some(group => allCellsEqual(group));
@@ -37,7 +35,9 @@ const Board = () => {
 
     const reset = () => {
       setIsPlaying(false);
-      setGrid(Array(9).fill({ isCircle: false, isVisible: false }));
+      setGrid(initialGrid());
+      dispatch({ type: RESET_PLAYER_TURN });
+      setButtonMessage('Play again');
     };
 
     const winnerExists = () =>
@@ -46,20 +46,18 @@ const Board = () => {
       hasWin(getColumns(grid));
 
     const getWinner = () => {
-      const playerNum = playerList.findIndex(player => !player.hasTurn);
-      return `Player ${playerNum + 1} has won!`;
+      const player = playerList.find(player => !player.hasTurn);
+      return `${player.name.toUpperCase()} has won!`;
     };
 
     if (isPlaying) {
       if (winnerExists()) {
         setOverlayMessage(getWinner());
-        setButtonMessage('Play again');
         reset();
       }
 
       if (gameTied()) {
         setOverlayMessage('Game tied!');
-        setButtonMessage('Play again');
         reset();
       }
     }
@@ -85,77 +83,49 @@ const Board = () => {
     setGrid(gridCopy);
   };
 
-  const handleSetPlayerList = () => {
-    const playerListCopy = [...playerList].map(player => {
-      return {
-        ...player,
-        hasTurn: !player.hasTurn,
-      };
-    });
-    setPlayerList(playerListCopy);
+  const handleCellClick = index => {
+    if (isPlaying) {
+      dispatch({ type: SWITCH_TURN });
+      handleSetGrid(index);
+    }
   };
 
-  const handleCellClick = index => {
-    handleSetPlayerList();
-    handleSetGrid(index);
+  const handleNext = () => {
+    setIsConfiguring(true);
+    setButtonMessage('start');
+    setOverlayMessage('Assign yourselves names!');
   };
 
   const handleStart = () => {
+    setIsConfiguring(false);
     setIsPlaying(true);
-    setGrid(Array(9).fill({ isCircle: false, isVisible: false }));
-    setPlayerList([
-      { isPlayerOne: true, isCircle: false, hasTurn: true },
-      { isPlayerOne: false, isCircle: true, hasTurn: false },
-    ]);
+    setGrid(initialGrid());
   };
 
-  const onValueChange = ({ target }) => setOpponent(parseInt(target.value));
+  const handlePlayerNameChange = (playerIndex, name) => {
+    const isPlayerOne = !Boolean(playerIndex);
+    const payload = { isPlayerOne, name };
+    dispatch({ type: SET_NAME, payload });
+  };
 
   return (
     <Fragment>
       <section className='board'>
-        <div className={`table ${isPlaying ? '' : 'disabled'}`}>
-          {grid.map((cell, index) => (
-            <Cell
-              key={index}
-              isCircle={cell.isCircle}
-              isVisible={cell.isVisible}
-              onClick={() => handleCellClick(index)}
-            />
-          ))}
-        </div>
-        <div className={`overlay-box ${isPlaying ? 'disabled' : ''}`}>
-          <div className='text'>{overlayMessage}</div>
-          <form className='board-settings'>
-            <label htmlFor='ai'>
-              <input
-                id='ai'
-                type='radio'
-                name='opponentType'
-                value={OpponentType.AI}
-                onChange={onValueChange}
-                checked={opponent === OpponentType.AI}
-              />
-              <span className='board-settings-text'>Play against AI</span>
-            </label>
-            <label htmlFor='human'>
-              <input
-                id='human'
-                type='radio'
-                name='opponentType'
-                value={OpponentType.HUMAN}
-                onChange={onValueChange}
-                checked={opponent === OpponentType.HUMAN}
-              />
-              <span className='board-settings-text'>Play with someone</span>
-            </label>
-          </form>
-          <div className='button' onClick={handleStart}>
-            {buttonMessage}
-          </div>
-        </div>
+        <Grid isPlaying={isPlaying} onCellClick={handleCellClick}>
+          {grid}
+        </Grid>
+        <BoardSettings
+          isPlaying={isPlaying}
+          isConfiguring={isConfiguring}
+          onSubmit={isConfiguring ? handleStart : handleNext}
+          overlayMessage={overlayMessage}
+          buttonMessage={buttonMessage}
+          handleNameChange={handlePlayerNameChange}
+        >
+          {playerList}
+        </BoardSettings>
+        <Legend isPlaying={isPlaying}>{playerList}</Legend>
       </section>
-      <Legend isPlaying={isPlaying}>{playerList}</Legend>
     </Fragment>
   );
 };

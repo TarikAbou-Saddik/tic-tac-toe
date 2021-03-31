@@ -1,0 +1,76 @@
+.board-settings {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.board-settings > * {
+  margin-bottom: 2vh;
+}
+
+.board-settings-text {
+  font-weight: 400;
+  margin-left: 3vw;
+}
+
+.overlay-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  position: absolute;
+  top: 43%;
+  left: 15%;
+  opacity: 1;
+  background: var(--backgroundDark);
+  border: 3px solid white;
+  padding: 3vh 2vh;
+  border-radius: 5px;
+  box-shadow: 3px 3px grey;
+  transition: all 0.3s ease-in-out;
+  width: 70%;
+}
+
+.overlay-box.disabled {
+  opacity: 0;
+  transform: translateX(200%);
+}
+
+.button {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 2vh 2vh;
+  background: black;
+  border: 2px solid white;
+  color: yellow;
+  text-shadow: 1px 1px grey;
+  font-weight: 900;
+  font-style: italic;
+  cursor: pointer;
+  box-shadow: 3px 3px grey;
+  margin-top: 1.5vh;
+  text-transform: uppercase;
+}
+
+.text {
+  text-align: center;
+  font-weight: 900;
+  font-style: italic;
+  margin-bottom: 2vh;
+  font-size: 1.4rem;
+  text-shadow: 1px 1px grey;
+}
+
+.player-name-input {
+  border: none;
+  height: 50px;
+  padding: 5px 10px;
+  background: black;
+  text-transform: uppercase;
+  text-align: center;
+  color: white;
+  font-style: italic;
+  text-shadow: 1px 1px grey;
+  font-weight: 900;
+}

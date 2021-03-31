@@ -34,3 +34,6 @@ export const getDiagonals = squareGrid => {
     rightDiagonals.push(squareGrid[i]);
   return [[...leftDiagonals], [...rightDiagonals]];
 };
+
+export const formatName = name =>
+  `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
