@@ -2,6 +2,7 @@ import React, { useState, useEffect, Fragment, useReducer } from 'react';
 import Legend from '../Legend/Legend';
 import BoardSettings from '../BoardSettings/BoardSettings';
 import Grid from '../Grid/Grid';
+import { OpponentType } from '../Utils/Constants';
 import {
   allCellsEqual,
   getColumns,
@@ -15,6 +16,7 @@ import {
   SET_NAME,
   SWITCH_TURN,
   RESET_PLAYER_TURN,
+  SET_AI_PLAYER,
 } from '../reducers';
 import './Board.css';
 
@@ -28,6 +30,7 @@ const Board = () => {
     playerListReducer,
     initialPlayerList(),
   );
+  const [numOfGames, setNumOfGames] = useState(0);
 
   useEffect(() => {
     const hasWin = grouping => grouping.some(group => allCellsEqual(group));
@@ -83,17 +86,45 @@ const Board = () => {
     setGrid(gridCopy);
   };
 
+  const handleSwitchTurn = index => {
+    const cell = grid[index];
+    if (!cell.isVisible) {
+      dispatch({ type: SWITCH_TURN });
+    }
+  };
+
   const handleCellClick = index => {
     if (isPlaying) {
-      dispatch({ type: SWITCH_TURN });
+      handleSwitchTurn(index);
       handleSetGrid(index);
     }
   };
 
-  const handleNext = () => {
-    setIsConfiguring(true);
-    setButtonMessage('start');
-    setOverlayMessage('Assign yourselves names!');
+  const handleNext = opponentType => {
+    if (opponentType === OpponentType.LOCAL) {
+      if (!numOfGames) {
+        setOverlayMessage('Assign yourselves names!');
+        setNumOfGames(prevValue => prevValue + 1);
+        setIsConfiguring(true);
+      } else {
+        setButtonMessage('start');
+        handleStart();
+      }
+    } else if (opponentType === OpponentType.ONLINE) {
+      setOverlayMessage('Waiting on your opponent...');
+      setIsConfiguring(true);
+      // BoardSettings should turn into a lobby.
+      // User should be marked as having joined lobby.
+      // Opponent should be marked as pending to join until they've joined.
+      // Button should indicate 'Waiting' and be disabled while we wait.
+    }
+    // AI
+    else {
+      setButtonMessage('start');
+      setOverlayMessage('Assign yourself a name!');
+      dispatch({ type: SET_AI_PLAYER, payload: true });
+      setIsConfiguring(true);
+    }
   };
 
   const handleStart = () => {
@@ -108,10 +139,16 @@ const Board = () => {
     dispatch({ type: SET_NAME, payload });
   };
 
+  const getCurrentPlayer = () => playerList.find(player => player.hasTurn);
+
   return (
     <Fragment>
       <section className='board'>
-        <Grid isPlaying={isPlaying} onCellClick={handleCellClick}>
+        <Grid
+          isPlaying={isPlaying}
+          currentPlayer={getCurrentPlayer()}
+          onCellClick={handleCellClick}
+        >
           {grid}
         </Grid>
         <BoardSettings
@@ -122,7 +159,7 @@ const Board = () => {
           buttonMessage={buttonMessage}
           handleNameChange={handlePlayerNameChange}
         >
-          {playerList}
+          {playerList.filter(player => !player.isAI)}
         </BoardSettings>
         <Legend isPlaying={isPlaying}>{playerList}</Legend>
       </section>

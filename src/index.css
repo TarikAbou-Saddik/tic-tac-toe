@@ -12,10 +12,17 @@
   padding: 0;
 }
 
+html {
+  overflow: hidden;
+}
+
 body {
-  font-family: 'Roboto', 'Oxygen', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--backgroundDark);
   overflow: hidden;
+  color: white;
+  max-height: 100vh;
+  padding: 5vh 5vw;
+  font-family: 'Montserrat', sans-serif;
 }

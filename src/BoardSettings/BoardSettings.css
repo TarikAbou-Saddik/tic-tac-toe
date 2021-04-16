@@ -1,26 +1,47 @@
+label,
+input[type='radio'] {
+  cursor: pointer;
+}
+
+label {
+  display: flex;
+  align-items: center;
+}
+
 .board-settings {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .board-settings > * {
   margin-bottom: 2vh;
 }
 
+.board-settings-options {
+  height: 12vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
 .board-settings-text {
   font-weight: 400;
-  margin-left: 3vw;
+  margin-left: 10px;
 }
 
 .overlay-box {
+  position: relative;
+  left: 10%;
+  bottom: 100%;
+  width: 80%;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
-  position: absolute;
-  top: 43%;
-  left: 15%;
   opacity: 1;
   background: var(--backgroundDark);
   border: 3px solid white;
@@ -28,7 +49,6 @@
   border-radius: 5px;
   box-shadow: 3px 3px grey;
   transition: all 0.3s ease-in-out;
-  width: 70%;
 }
 
 .overlay-box.disabled {
@@ -49,28 +69,94 @@
   font-style: italic;
   cursor: pointer;
   box-shadow: 3px 3px grey;
-  margin-top: 1.5vh;
+  margin-top: 1vh;
   text-transform: uppercase;
+  min-width: 60%;
 }
 
 .text {
   text-align: center;
   font-weight: 900;
   font-style: italic;
-  margin-bottom: 2vh;
   font-size: 1.4rem;
   text-shadow: 1px 1px grey;
 }
 
 .player-name-input {
   border: none;
-  height: 50px;
+  height: 6vh;
   padding: 5px 10px;
   background: black;
   text-transform: uppercase;
   text-align: center;
   color: white;
+  font-size: 1rem;
   font-style: italic;
   text-shadow: 1px 1px grey;
   font-weight: 900;
+  border-radius: 10px;
+}
+
+.online {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5vh;
+}
+
+.code-input {
+  width: 65%;
+  height: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  text-transform: uppercase;
+  text-align: center;
+  border: none;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.clipboard-copy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 40px;
+  background: black;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 1px solid white;
+  cursor: pointer;
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .board-settings-text {
+    font-weight: 400;
+    font-size: 1.1rem;
+    margin-left: 1.5vw;
+  }
+  .text {
+    font-size: 2rem;
+  }
+  .overlay-box {
+    width: 30%;
+    left: 35%;
+  }
+
+  .button {
+    min-width: 40%;
+  }
+
+  .code-input {
+    width: 85%;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
 }

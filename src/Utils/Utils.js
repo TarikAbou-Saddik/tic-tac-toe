@@ -37,3 +37,26 @@ export const getDiagonals = squareGrid => {
 
 export const formatName = name =>
   `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
+
+export const makeid = length => {
+  var result = '';
+  var letters = 'ABCDEFGHIJKLMONPQRSTUVWXYZ';
+  var numbers = '0123456789';
+  var characters = `${letters}${letters.toLowerCase()}${numbers}`;
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+};
+
+export const createAudioBuffer = async (arrayBuffer, audioContext) => {
+  return new Promise(resolve => {
+    audioContext.decodeAudioData(arrayBuffer, buffer => resolve(buffer));
+  });
+};
+
+// TODO: Probably use a dumb API like SWAPI to make it happen.
+export const getRandomAIName = () => {
+  return 'Dr. Jones';
+};

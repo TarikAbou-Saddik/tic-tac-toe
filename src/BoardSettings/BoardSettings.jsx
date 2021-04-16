@@ -1,10 +1,10 @@
 import React, { useState, Fragment } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClipboard } from '@fortawesome/free-solid-svg-icons';
+import { makeid } from '../Utils/Utils';
+import { OpponentType } from '../Utils/Constants';
 import './BoardSettings.css';
-
-const OpponentType = {
-  AI: 0,
-  HUMAN: 1,
-};
+import Tooltip from '../Tooltip';
 
 const BoardSettings = ({
   isPlaying,
@@ -15,37 +15,70 @@ const BoardSettings = ({
   handleNameChange,
   children,
 }) => {
-  const [opponent, setOpponent] = useState(OpponentType.HUMAN);
+  const [opponent, setOpponent] = useState(OpponentType.LOCAL);
+  const [gameCode] = useState(makeid(10));
+  const [copyGameCodeText, setCopyGameCodeText] = useState('Copy Game Code');
 
-  const onValueChange = ({ target }) => setOpponent(parseInt(target.value));
+  const copyToClipboard = () => {
+    setCopyGameCodeText('Copied Game Code!');
+    navigator.clipboard.writeText(gameCode);
+  };
+
+  const getOpponentText = type => {
+    if (type === 'LOCAL' || type === 'ONLINE') {
+      return `2-player ${type.toLowerCase()}`;
+    }
+    return `Play against ${type}`;
+  };
+
+  const handleOnSumbit = () => {
+    onSubmit(opponent);
+  };
+
   return (
     <div className={`overlay-box ${isPlaying ? 'disabled' : ''}`}>
       <div className='text'>{overlayMessage}</div>
       <div className='board-settings'>
         {!isConfiguring && (
           <Fragment>
-            <label htmlFor='ai'>
-              <input
-                id='ai'
-                type='radio'
-                name='opponentType'
-                value={OpponentType.AI}
-                onChange={onValueChange}
-                checked={opponent === OpponentType.AI}
-              />
-              <span className='board-settings-text'>Play against AI</span>
-            </label>
-            <label htmlFor='human'>
-              <input
-                id='human'
-                type='radio'
-                name='opponentType'
-                value={OpponentType.HUMAN}
-                onChange={onValueChange}
-                checked={opponent === OpponentType.HUMAN}
-              />
-              <span className='board-settings-text'>Play with someone</span>
-            </label>
+            <div className='board-settings-options'>
+              {Object.keys(OpponentType).map((type, index) => (
+                <label key={`opponent-${index}`} htmlFor={type.toLowerCase()}>
+                  <input
+                    id={type.toLowerCase()}
+                    type='radio'
+                    name='opponentType'
+                    value={OpponentType[type]}
+                    onChange={e => setOpponent(parseInt(e.target.value))}
+                    checked={opponent === OpponentType[type]}
+                  />
+                  <span className='board-settings-text'>
+                    {getOpponentText(type)}
+                  </span>
+                </label>
+              ))}
+            </div>
+            {opponent === OpponentType.ONLINE && (
+              <div className='online'>
+                <Fragment>
+                  <input
+                    className='code-input'
+                    type='text'
+                    value={gameCode}
+                    readOnly
+                  />
+                  <Tooltip text={copyGameCodeText}>
+                    <div
+                      id='clipboard'
+                      className='clipboard-copy'
+                      onClick={copyToClipboard}
+                    >
+                      <FontAwesomeIcon icon={faClipboard} />
+                    </div>
+                  </Tooltip>
+                </Fragment>
+              </div>
+            )}
           </Fragment>
         )}
         {isConfiguring && (
@@ -61,7 +94,7 @@ const BoardSettings = ({
             ))}
           </Fragment>
         )}
-        <div className='button' onClick={onSubmit}>
+        <div className='button' onClick={handleOnSumbit}>
           {buttonMessage}
         </div>
       </div>

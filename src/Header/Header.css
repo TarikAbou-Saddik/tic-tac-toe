@@ -1,7 +1,7 @@
 .title {
   text-align: center;
   text-transform: uppercase;
-  font-size: 4rem;
+  font-size: 3.3rem;
   font-style: italic;
   text-shadow: 5px 5px black;
   font-weight: 900;
@@ -10,9 +10,24 @@
 
 .subtitle {
   margin: 2vh auto;
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: lighter;
   color: rgba(255, 255, 255, 0.6);
   width: 80%;
   text-align: center;
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .subtitle {
+    font-size: 1.2rem;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
 }

@@ -1,6 +1,7 @@
 .legend {
   position: absolute;
-  bottom: 1vh;
+  bottom: 0;
+  left: 10%;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -9,7 +10,6 @@
   width: 80%;
   padding: 1vh;
   border: 3px solid white;
-  margin: 5px auto;
 }
 
 .player {
@@ -18,10 +18,11 @@
   font-style: italic;
   text-transform: uppercase;
   transition: all 0.3s ease-in-out;
+  font-size: 1em;
 }
 
 .player > *:first-child {
-  margin-left: 10px;
+  margin-left: 2vw;
 }
 
 .player1.active {
@@ -34,4 +35,24 @@
 
 .disabled {
   color: rgba(211, 211, 211, 0.4);
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .legend {
+    width: 50%;
+    left: 25%;
+    bottom: 5vh;
+  }
+  .player {
+    font-size: 1.5em;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
 }
