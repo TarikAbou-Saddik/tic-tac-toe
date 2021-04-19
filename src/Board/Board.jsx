@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment, useReducer } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import Legend from '../Legend/Legend';
 import BoardSettings from '../BoardSettings/BoardSettings';
 import Grid from '../Grid/Grid';
@@ -16,9 +16,10 @@ import {
   SET_NAME,
   SWITCH_TURN,
   RESET_PLAYER_TURN,
-  SET_AI_PLAYER,
+  ADD_AI_PLAYER,
 } from '../reducers';
 import './Board.css';
+import { SocketContextProvider } from '../SocketContext';
 
 const Board = () => {
   const [grid, setGrid] = useState(initialGrid());
@@ -122,7 +123,7 @@ const Board = () => {
     else {
       setButtonMessage('start');
       setOverlayMessage('Assign yourself a name!');
-      dispatch({ type: SET_AI_PLAYER, payload: true });
+      dispatch({ type: ADD_AI_PLAYER, payload: true });
       setIsConfiguring(true);
     }
   };
@@ -142,7 +143,7 @@ const Board = () => {
   const getCurrentPlayer = () => playerList.find(player => player.hasTurn);
 
   return (
-    <Fragment>
+    <SocketContextProvider>
       <section className='board'>
         <Grid
           isPlaying={isPlaying}
@@ -163,7 +164,7 @@ const Board = () => {
         </BoardSettings>
         <Legend isPlaying={isPlaying}>{playerList}</Legend>
       </section>
-    </Fragment>
+    </SocketContextProvider>
   );
 };
 

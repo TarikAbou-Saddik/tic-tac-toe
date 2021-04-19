@@ -1,10 +1,10 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClipboard } from '@fortawesome/free-solid-svg-icons';
-import { makeid } from '../Utils/Utils';
 import { OpponentType } from '../Utils/Constants';
 import './BoardSettings.css';
 import Tooltip from '../Tooltip';
+import { SocketContext } from '../SocketContext';
 
 const BoardSettings = ({
   isPlaying,
@@ -15,8 +15,8 @@ const BoardSettings = ({
   handleNameChange,
   children,
 }) => {
+  const { gameCode, generateLobby } = useContext(SocketContext);
   const [opponent, setOpponent] = useState(OpponentType.LOCAL);
-  const [gameCode] = useState(makeid(10));
   const [copyGameCodeText, setCopyGameCodeText] = useState('Copy Game Code');
 
   const copyToClipboard = () => {
@@ -35,6 +35,11 @@ const BoardSettings = ({
     onSubmit(opponent);
   };
 
+  const handleOpponentChange = e => {
+    generateLobby();
+    setOpponent(parseInt(e.target.value));
+  };
+
   return (
     <div className={`overlay-box ${isPlaying ? 'disabled' : ''}`}>
       <div className='text'>{overlayMessage}</div>
@@ -49,7 +54,7 @@ const BoardSettings = ({
                     type='radio'
                     name='opponentType'
                     value={OpponentType[type]}
-                    onChange={e => setOpponent(parseInt(e.target.value))}
+                    onChange={e => handleOpponentChange(e)}
                     checked={opponent === OpponentType[type]}
                   />
                   <span className='board-settings-text'>
