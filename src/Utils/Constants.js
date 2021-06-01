@@ -3,3 +3,14 @@ export const OpponentType = {
   LOCAL: 1,
   ONLINE: 2,
 };
+
+export const GameState = {
+  MENU: 0,
+  ASSIGN_PLAYER_NAMES: 1,
+  WAIT_IN_LOBBY_ONLINE: 2,
+  WAIT_TO_CONNECT_ONLINE: 3,
+  GAME_READY_TO_START: 4,
+  GAME_IN_PROGRESS: 5,
+  GAME_COMPLETED: 6,
+  CONFIG_SETTINGS_ONLINE: 7,
+};

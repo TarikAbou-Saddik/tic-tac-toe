@@ -3,6 +3,10 @@ input[type='radio'] {
   cursor: pointer;
 }
 
+input[type='text']:focus {
+  outline: none;
+}
+
 label {
   display: flex;
   align-items: center;
@@ -63,7 +67,7 @@ label {
   padding: 2vh 2vh;
   background: black;
   border: 2px solid white;
-  color: yellow;
+  color: grey;
   text-shadow: 1px 1px grey;
   font-weight: 900;
   font-style: italic;
@@ -74,18 +78,22 @@ label {
   min-width: 60%;
 }
 
+.button.active {
+  color: yellow;
+}
+
 .text {
+  margin-bottom: 10px;
   text-align: center;
   font-weight: 900;
   font-style: italic;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   text-shadow: 1px 1px grey;
 }
 
 .player-name-input {
   border: none;
   height: 6vh;
-  padding: 5px 10px;
   background: black;
   text-transform: uppercase;
   text-align: center;
@@ -95,6 +103,24 @@ label {
   text-shadow: 1px 1px grey;
   font-weight: 900;
   border-radius: 10px;
+}
+
+.player-input-container {
+  padding: 0 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: black;
+  border-radius: 10px;
+}
+
+.check-circle {
+  color: grey;
+  font-size: 1.5rem;
+}
+
+.check-circle.active {
+  color: #1db954;
 }
 
 .online {

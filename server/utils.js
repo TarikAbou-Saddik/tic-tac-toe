@@ -30,4 +30,6 @@ const makeid = length => {
   return result;
 };
 
-module.exports = { originIsAllowed, getUniqueId, isValidRequest, makeid };
+const log = message => console.log(`${new Date()}: ${message}!`);
+
+module.exports = { originIsAllowed, getUniqueId, isValidRequest, makeid, log };
